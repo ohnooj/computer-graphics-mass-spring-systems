@@ -175,7 +175,7 @@ int main(int argc, char * argv[])
   viewer.data_list[mesh_id].show_lines = false;
   viewer.core().is_animating = false;
 
-  viewer.launch_init(true,false);
+  viewer.launch_init(false);
   viewer.data().meshgl.init();
   // Ooof. All this to turn on double-sided lighting...
   igl::opengl::destroy_shader_program(viewer.data().meshgl.shader_mesh);

@@ -1,5 +1,7 @@
 build*
 .*.un~
-solution*
 .DS_Store
 .*.swp
+
+solution/
+.cache/

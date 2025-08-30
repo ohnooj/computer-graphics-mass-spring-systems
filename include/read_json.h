@@ -38,8 +38,9 @@ inline bool read_json(
 #include <igl/massmatrix.h>
 #include <igl/edges.h>
 #include <igl/list_to_matrix.h>
-#include <igl/polygon_mesh_to_triangle_mesh.h>
-#include <igl/png/readPNG.h>
+#include <igl/polygons_to_triangles.h>
+#include <igl/stb/read_image.h>
+#include <igl/list_to_matrix.h>
 #include <json.hpp>
 inline bool read_json(
   const std::string & filename,
@@ -89,9 +90,16 @@ inline bool read_json(
   }
   if(F.cols()>2)
   {
+    Eigen::VectorXi I, C, J;
+
+    // readObj polygon version
+    igl::polygon_corners(F,I,C);
+
     igl::edges(F,E);
-    igl::polygon_mesh_to_triangle_mesh(Eigen::MatrixXi(F),F);
-    igl::polygon_mesh_to_triangle_mesh(Eigen::MatrixXi(FT),FT);
+    igl::polygons_to_triangles(I, C, F, J);
+    igl::polygons_to_triangles(I, C, FT, J);
+    // igl::polygon_mesh_to_triangle_mesh(Eigen::MatrixXi(F),F);
+    // igl::polygon_mesh_to_triangle_mesh(Eigen::MatrixXi(FT),FT);
   }else
   {
     E = F;
@@ -106,7 +114,7 @@ inline bool read_json(
       const std::string full_png_filename = 
         igl::dirname(filename)+ PATH_SEPARATOR + png_filename;
     Eigen::Matrix<unsigned char,Eigen::Dynamic,Eigen::Dynamic> A;
-    igl::png::readPNG(full_png_filename,R,G,B,A);
+    igl::stb::read_image(full_png_filename,R,G,B,A);
   }
 
   // mass
